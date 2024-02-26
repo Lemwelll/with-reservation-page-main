@@ -1,0 +1,126 @@
+<template>
+  <v-row no-gutters class="pa-4" justify="center">
+    <v-col v-if="isAdmin" cols="12">
+      <v-row>
+        <v-col cols="12" xxl="4" xl="4" lg="4">
+          <v-card width="100%">
+            <v-row no-gutters class="pa-8">
+              <v-col cols="12"> Earnings(Monthly) </v-col>
+              <v-col cols="12" class="text-h6 font-weight-bold">
+                PHP 25,000.00
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" xxl="4" xl="4" lg="4">
+          <v-card width="100%">
+            <v-row no-gutters class="pa-8">
+              <v-col cols="12"> Earnings(Daily) </v-col>
+              <v-col cols="12" class="text-h6 font-weight-bold">
+                PHP 5,000.00
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="12" class="mt-4">
+      <v-card flat style="border-width: thin">
+        <v-table density="compact" fixed-header style="max-height: 67vh">
+          <thead>
+            <tr>
+              <th class="text-left">ID</th>
+              <th class="text-left">Date</th>
+              <th class="text-left">Student ID</th>
+              <th class="text-left">Student Name</th>
+              <th class="text-left">Total</th>
+              <th class="text-left">Status</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template
+              v-for="reservationItem in sortedReservationItems"
+              :key="reservationItem.id"
+            >
+              <tr>
+                <td>{{ reservationItem.id }}</td>
+                <td>{{ reservationItem.date }}</td>
+                <td>{{ reservationItem.student }}</td>
+                <td>{{ reservationItem.studentName }}</td>
+                <td>{{ formatNumberIntoString(reservationItem.total) }}</td>
+                <td>{{ reservationItem.status }}</td>
+                <td>
+                  <v-row no-gutters align="center" justify="center">
+                    <v-btn
+                      v-if="isAdmin"
+                      variant="text"
+                      density="compact"
+                      icon
+                      size="small"
+                      class="mx-1"
+                      :disabled="reservationItem.status !== 'pending'"
+                      @click="completeReservation(reservationItem)"
+                    >
+                      <v-icon>mdi-check-circle</v-icon>
+                      <v-tooltip activator="parent" location="bottom">
+                        Complete
+                      </v-tooltip>
+                    </v-btn>
+
+                    <v-btn
+                      v-if="!isAdmin"
+                      variant="text"
+                      density="compact"
+                      icon
+                      size="small"
+                      class="mx-1"
+                      @click="removeReservationItem(reservationItem)"
+                    >
+                      <v-icon size="small"> mdi-trash-can-outline </v-icon>
+                      <v-tooltip activator="parent" location="bottom">
+                        Delete
+                      </v-tooltip>
+                    </v-btn>
+
+                    <v-btn
+                      v-if="isAdmin"
+                      variant="text"
+                      density="compact"
+                      icon
+                      size="small"
+                      class="mx-1"
+                      :disabled="reservationItem.status !== 'pending'"
+                      @click="declineReservation(reservationItem)"
+                    >
+                      <v-icon> mdi-close-circle </v-icon>
+                      <v-tooltip activator="parent" location="bottom">
+                        Decline
+                      </v-tooltip>
+                    </v-btn>
+                  </v-row>
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </v-table>
+      </v-card>
+    </v-col>
+  </v-row>
+</template>
+
+<script setup>
+const {
+  reservationItems,
+  removeReservationItem,
+  completeReservation,
+  declineReservation,
+} = useReservation();
+const { formatNumberIntoString } = useUtils();
+const { isAdmin } = useLocalAuth();
+
+const sortedReservationItems = computed(() =>
+  reservationItems.value.sort((a, b) => b.id - a.id),
+);
+</script>
