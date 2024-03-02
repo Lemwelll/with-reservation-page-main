@@ -15,7 +15,7 @@
       <v-row no-gutters class="pa-8 fill-height">
         <v-form v-model="valid" @submit.prevent="submit(email, password)">
           <v-col cols="12" class="text-h4 font-weight-black mb-8">
-            UIC Bookstore online reservation system
+            UIC Bookstore Online Reservation System
           </v-col>
           <v-col cols="12" class="text-h5 mb-6"> Sign In </v-col>
           <v-col cols="12" xxl="8" xl="8" lg="8" justify-self="center">

@@ -10,7 +10,7 @@
           <v-col cols="12" lg="9">
             <v-form v-model="valid" @submit.prevent="recoverPassword(form)">
               <v-row no-gutters class="pa-8">
-                <v-col cols="12" class="text-h4 mb-8"> Scoped World </v-col>
+                <v-col cols="12" class="text-h4 mb-8"> Reset Password </v-col>
                 <v-col cols="12" class="text-h5"> Recover your account </v-col>
                 <v-col cols="12" class="text-subtitle-1 font-weight-bold mb-4">
                   Have an account?

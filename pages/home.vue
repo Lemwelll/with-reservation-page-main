@@ -44,7 +44,7 @@
           append-icon="mdi-arrow-right"
           :to="{ name: 'store' }"
         >
-          go to store
+          Go to Store
         </v-btn>
       </v-row>
     </v-col>

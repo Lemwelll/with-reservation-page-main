@@ -4,8 +4,8 @@ export default function useInventory() {
       id: Date.now() + 1,
       category: "uniform",
       name: "School Uniform(Women)",
-      price: 1100,
-      stock: 1000,
+      price: 200,
+      stock: 10,
       size: "",
       image: "",
     },
@@ -146,7 +146,7 @@ export default function useInventory() {
     },
   ]);
 
-  const sizes = ref(["S", "M", "L", "XL", "XXL", "XXXL"]);
+  const sizes = ref(["S" , "M", "L", "XL", "XXL", "XXXL"]);
 
   const categories = ref([
     { title: "All", value: "all" },

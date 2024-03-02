@@ -2,12 +2,12 @@
   <v-row no-gutters class="fill-height pa-16" justify="center">
     <v-col cols="12" xxl="5" xl="5" lg="5">
       <v-row no-gutters class="fill-height" align-content="center">
-        <v-col cols="12" class="text-h3 font-weight-black"> Welcome to </v-col>
+        <v-col cols="12" class="text-h3 font-weight-black"> Welcome To </v-col>
         <v-col cols="12" class="text-h3 font-weight-black">
-          UIC bookstore
+          UIC Bookstore
         </v-col>
         <v-col cols="12" class="text-h3 font-weight-black">
-          reservation system
+          Reservation System
         </v-col>
         <v-col cols="12" class="text-h3 font-weight-black">
           (Fr. Selga Campus)
