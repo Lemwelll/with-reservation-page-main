@@ -6,7 +6,7 @@
         style="cursor: pointer"
         @click="useRouter().push({ name: 'dashboard' })"
       >
-        Scoped World
+        Forgot Password
       </span>
       <v-spacer></v-spacer>
       <v-menu
@@ -18,7 +18,7 @@
         <template #activator="{ props }">
           <v-btn icon v-bind="props">
             <v-avatar color="info">
-              <v-img src="/profile-avatar.jpeg" alt="Dave"></v-img>
+              <v-img src="/profile-avatar.jpeg" alt="UIC"></v-img>
             </v-avatar>
           </v-btn>
         </template>
@@ -37,7 +37,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn variant="text" @click="logout()"> logout </v-btn>
+            <v-btn variant="text" @click="logout()"> Logout </v-btn>
           </v-card-actions>
         </v-card>
       </v-menu>

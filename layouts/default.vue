@@ -6,7 +6,7 @@
         style="cursor: pointer"
         @click="useRouter().push({ name: 'home' })"
       >
-        UICT Online Bookstore Reservation
+        UIC Online Bookstore Reservation System
       </span>
       <v-spacer></v-spacer>
       <v-btn icon class="mx-1">

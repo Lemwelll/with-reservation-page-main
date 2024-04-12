@@ -69,7 +69,7 @@
                       :disabled="!valid"
                       type="submit"
                     >
-                      sign in
+                      Sign In
                     </v-btn>
                   </v-col>
                 </v-row>

@@ -6,7 +6,7 @@
         style="cursor: pointer"
         @click="useRouter().push({ name: 'home' })"
       >
-        UICT Online Bookstore Reservation
+        UIC Bookstore Reservation System
       </span>
       <v-spacer></v-spacer>
       <v-btn icon class="mx-1">
@@ -40,7 +40,7 @@
               :disabled="!items.length"
               @click="proceedToReservation(reservation)"
             >
-              click to confirm reservation
+              Click to Confirm Reservation
             </v-btn>
           </v-row>
         </v-col>

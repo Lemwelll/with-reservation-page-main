@@ -4,7 +4,7 @@ export default function useInventory() {
       id: Date.now() + 1,
       category: "uniform",
       name: "School Uniform(Women)",
-      price: 200,
+      price: 500,
       stock: 10,
       size: "",
       image: "",
@@ -39,7 +39,7 @@ export default function useInventory() {
     {
       id: Date.now() + 5,
       category: "book",
-      name: "PBS 300 pharmaceutical microbiology and parasitology",
+      name: "PBS 300 Pharmaceutical Microbiology and Parasitology",
       price: 450,
       stock: 1000,
       size: "",
@@ -48,7 +48,7 @@ export default function useInventory() {
     {
       id: Date.now() + 6,
       category: "book",
-      name: "PBS100 pharmaceutical biochemistry",
+      name: "PBS100 Pharmaceutical Biochemistry",
       price: 450,
       stock: 1000,
       size: "",
@@ -57,7 +57,7 @@ export default function useInventory() {
     {
       id: Date.now() + 6,
       category: "book",
-      name: "PBS100 pharmacy botany with taxinomy",
+      name: "PBS100 Pharmacy Botany with Taxinomy",
       price: 450,
       stock: 1000,
       size: "",
@@ -66,7 +66,7 @@ export default function useInventory() {
     {
       id: Date.now() + 6,
       category: "book",
-      name: "PBSS02 pharmacology II",
+      name: "PBSS02 Pharmacology II",
       price: 450,
       stock: 1000,
       size: "",
@@ -75,7 +75,7 @@ export default function useInventory() {
     {
       id: Date.now() + 6,
       category: "book",
-      name: "PCH100 pharmaceutical inorganic chemistry",
+      name: "PCH100 Pharmaceutical Inorganic Chemistry",
       price: 450,
       stock: 1000,
       size: "",
@@ -84,7 +84,7 @@ export default function useInventory() {
     {
       id: Date.now() + 7,
       category: "book",
-      name: "PBSS02 pharmacology II",
+      name: "PBSS02 Pharmacology II",
       price: 450,
       stock: 1000,
       size: "",
@@ -93,7 +93,7 @@ export default function useInventory() {
     {
       id: Date.now() + 8,
       category: "book",
-      name: "PCH100 pharmaceutical inorganic chemistry",
+      name: "PCH100 Pharmaceutical Inorganic Chemistry",
       price: 450,
       stock: 1000,
       size: "",
@@ -102,7 +102,7 @@ export default function useInventory() {
     {
       id: Date.now() + 8,
       category: "book",
-      name: "PCR202 dispensing 2",
+      name: "PCR202 Dispensing 2",
       price: 450,
       stock: 1000,
       size: "",
@@ -111,7 +111,7 @@ export default function useInventory() {
     {
       id: Date.now() + 8,
       category: "book",
-      name: "PCT 100 phar.dosage forms- DDS",
+      name: "PCT 100 Phar.dosage forms- DDS",
       price: 450,
       stock: 1000,
       size: "",
@@ -120,7 +120,7 @@ export default function useInventory() {
     {
       id: Date.now() + 8,
       category: "book",
-      name: "PCT 200 physical phramacy",
+      name: "PCT 200 Physical Pharmacy",
       price: 450,
       stock: 1000,
       size: "",
@@ -129,7 +129,7 @@ export default function useInventory() {
     {
       id: Date.now() + 8,
       category: "book",
-      name: "physical manufacturing _ CGMP",
+      name: "Physical Manufacturing _ CGMP",
       price: 450,
       stock: 1000,
       size: "",
@@ -138,12 +138,13 @@ export default function useInventory() {
     {
       id: Date.now() + 8,
       category: "book",
-      name: "PPR200 pharmaceutical calculations and techniques",
+      name: "PPR200 Pharmaceutical Calculations and Techniques",
       price: 450,
       stock: 1000,
       size: "",
-      image: "/PPR200 pharmaceutical calculations and techniques.jpg",
+      image: "/PPR200 pharmaceutical calculations and techniques.png",
     },
+    
   ]);
 
   const sizes = ref(["S" , "M", "L", "XL", "XXL", "XXXL"]);
