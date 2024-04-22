@@ -9,6 +9,8 @@
               @submit.prevent="
                 signup({
                   id: form.id,
+                  firstName: form.firstName,
+                  lastName: form.lastName,
                   email: form.email,
                   password: form.password,
                 })
@@ -21,6 +23,24 @@
                 <v-col cols="12" class="text-h4 fontweight-black mb-8">
                   (Fr. Selga Campus)
                 </v-col>
+                <v-col cols="12" xxl="8" xl="8" lg="8" class="my-2">
+                  <v-text-field
+                    v-model="form.firstName"
+                    label="First Name"
+                    :rules="[requiredInput]"
+                    hint="Juan"
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" xxl="8" xl="8" lg="8" class="my-2">
+                  <v-text-field
+                    v-model="form.lastName"
+                    label="Last Name"
+                    :rules="[requiredInput]"
+                    hint="Luna"
+                  ></v-text-field>
+                </v-col>
+
                 <v-col cols="12" xxl="8" xl="8" lg="8" class="my-2">
                   <v-text-field
                     v-model="form.email"
@@ -111,16 +131,18 @@ const valid = ref(false);
 const show = ref(false);
 const form = ref({
   id: "",
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
 });
 
 const { signup: createNewUser } = useLocalAuth();
 
-async function signup({ id = "", email = "", password = "" }) {
+async function signup({ id = "", email = "", password = "", firstName ="", lastName="" }) {
   try {
-    await createNewUser({ id, email, password });
-    useRouter().push({ name: "index" });
+    await createNewUser({ id, email, password, firstName, lastName });
+    
   } catch (error) {}
 }
 

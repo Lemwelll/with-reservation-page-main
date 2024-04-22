@@ -34,6 +34,7 @@
               <th class="text-left">Date</th>
               <th class="text-left">Student ID</th>
               <th class="text-left">Student Name</th>
+              <th class="text-left">Items</th>
               <th class="text-left">Total</th>
               <th class="text-left">Status</th>
               <th class="text-center">Actions</th>
@@ -41,7 +42,7 @@
           </thead>
           <tbody>
             <template
-              v-for="reservationItem in sortedReservationItems"
+              v-for="reservationItem in reservationList"
               :key="reservationItem.id"
             >
               <tr>
@@ -49,6 +50,10 @@
                 <td>{{ reservationItem.date }}</td>
                 <td>{{ reservationItem.student }}</td>
                 <td>{{ reservationItem.studentName }}</td>
+                <td><v-chip class="ma-2 " v-for="item in JSON.parse(JSON.parse(reservationItem.items))" :key="item.id">
+                  <v-icon class="mr-2">mdi-cart</v-icon>
+                  [P {{ item.price }}.00] {{ item.name }}
+                </v-chip></td>
                 <td>{{ formatNumberIntoString(reservationItem.total) }}</td>
                 <td>{{ reservationItem.status }}</td>
                 <td>
@@ -111,6 +116,8 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+
 const {
   reservationItems,
   removeReservationItem,
@@ -120,7 +127,21 @@ const {
 const { formatNumberIntoString } = useUtils();
 const { isAdmin } = useLocalAuth();
 
+const reservationList = ref([]);
+
+onMounted( () => {
+
+axios.get("http://localhost:8081/api/reservationdetails/").then(data => {
+  reservationList.value = data.data
+}).catch(err => {
+  console.error(err)
+})
+
+} )
+
 const sortedReservationItems = computed(() =>
   reservationItems.value.sort((a, b) => b.id - a.id),
 );
+
+
 </script>

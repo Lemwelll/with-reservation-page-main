@@ -58,6 +58,9 @@ const { formatNumberIntoString } = useUtils();
 const { addReservationItem, reservation } = useReservation();
 
 function saveCart() {
+
+  const formData = new FormData()
+
   const data = {
     createDate: new Date(),
     expiryDate: new Date(),
@@ -65,13 +68,27 @@ function saveCart() {
     totalAmount: items.value.reduce(
       (acc, item) => acc + item.price, 0
     ),
-    studentID: "123123123",
-    items: items.value
+    studentID: 123123123,
+    items: JSON.stringify(items.value)
   }
 
-  axios.post("http://localhost:8081/api/reservationdetails/", data).then(data => {
+  
+
+  Object.keys(data).forEach(key => {
+    console.log(key, data[key]);
+    formData.append(key, data[key]);
+  });
+
+  axios({
+    method: 'post',
+    url: "http://localhost:8081/api/reservationdetails/",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  }).then(data => {
     console.log('Cart added: ', data.data)
+    alert('Cart successfuly added!');
   }).catch(err => {
+    alert('Opps, something went wrong');
     console.error('Cart add error', err)
   })
 }

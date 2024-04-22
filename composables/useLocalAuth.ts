@@ -1,3 +1,6 @@
+import axios from "axios";
+import { any } from "cypress/types/bluebird";
+
 export default function useLocalAuth() {
   const config = useRuntimeConfig().public;
   const cookieOptions = { domain: config.DOMAIN, secure: true };
@@ -14,11 +17,37 @@ export default function useLocalAuth() {
     useCookie("user", cookieOptions).value = email;
   }
 
-  function signup({ id = "", email = "", password = "" } = {}) {
-    return useLocalFetch("/api/users/sign-up", {
-      method: "POST",
-      body: JSON.stringify({ id, email, password }),
-    });
+  function signup({ id = "", email = "", password = "", firstName = "", lastName = "", } = {}) {
+
+    console.log(email, password);
+
+    const formData = new FormData();
+
+    const data: any = {
+      id: id,
+      uicEmail: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName
+    }
+
+    // convert data into formData
+    Object.keys(data).forEach(key => formData.append(key, data[key]));
+
+    axios.post('http://localhost:8081/api/student/login', formData).then( (res: any) => {
+      if (res.data.studentID) {
+        localStorage.setItem('studentLogin', res.data);
+        alert(`Signup success. Welcome ${res.data.firstName}`)
+        location.href = '/store'
+      } else {
+        alert('Login Error. Please try again!')
+      }
+    }).catch( (err: any) => {
+      alert('Oops, something went wrong');
+      console.error(err);
+    } )
+
+    
   }
 
   async function logout() {
