@@ -50,13 +50,35 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+
 const { items, total } = useCart();
 const { formatNumberIntoString } = useUtils();
 
 const { addReservationItem, reservation } = useReservation();
 
+function saveCart() {
+  const data = {
+    createDate: new Date(),
+    expiryDate: new Date(),
+    numofItems: items.value.length,
+    totalAmount: items.value.reduce(
+      (acc, item) => acc + item.price, 0
+    ),
+    studentID: "123123123",
+    items: items.value
+  }
+
+  axios.post("http://localhost:8081/api/reservationdetails/", data).then(data => {
+    console.log('Cart added: ', data.data)
+  }).catch(err => {
+    console.error('Cart add error', err)
+  })
+}
+
 function proceedToReservation(item) {
   addReservationItem(item);
+  saveCart();
   items.value = [];
 }
 </script>

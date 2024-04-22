@@ -6,6 +6,7 @@ export default function useCart() {
     if (!similarItem || (similarItem && similarItem.size !== item.size)) {
       const product = JSON.parse(JSON.stringify(item));
       product.stock = 1;
+      console.log(product);
       items.value.push(product);
     }
   }

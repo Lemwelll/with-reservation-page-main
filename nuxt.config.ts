@@ -2,6 +2,9 @@ import vuetify from "vite-plugin-vuetify";
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 // @ts-ignore
 export default defineNuxtConfig({
+  devServer: {
+    port: 5151
+  },
   devtools: { enabled: true },
   css: ["vuetify/styles", "@/assets/css/main.css"], // vuetify ships precompiled css, no need to import sass
   app: {

@@ -3,13 +3,13 @@
     <v-col cols="12">
       <v-row>
         <v-col cols="12" xxl="4" xl="4" lg="4">
-          <v-text-field label="Search" rounded="xl" hide-details>
+          <v-text-field label="Search" rounded="xl" hide-details v-model="search">
           </v-text-field>
         </v-col>
 
         <v-col cols="12" xxl="2" xl="2" lg="2">
           <v-select
-            v-model="category"
+            v-model="filterCategory"
             :items="categories"
             label="Filter By Category"
             rounded="xl"
@@ -22,14 +22,14 @@
 
     <v-col cols="12" class="mt-4">
       <v-row no-gutters>
-        <v-col v-if="!filterItems.length" cols="12" class="text-center">
+        <v-col v-if="!searchCompute.length" cols="12" class="text-center">
           No Data.
         </v-col>
 
         <v-col v-else cols="12">
           <v-row>
             <template
-              v-for="inventoryItem in filterItems"
+              v-for="inventoryItem in searchCompute"
               :key="inventoryItem.name"
             >
               <v-col cols="12" xxl="3" xl="3" lg="3">
@@ -108,7 +108,48 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+
 const { formatNumberIntoString } = useUtils();
 const { sizes, filterItems, category, categories } = useInventory();
 const { addToCart } = useCart();
+
+
+const items = ref([]);
+const filterCategory = ref("all");
+const search = ref("");
+
+onMounted( () => {
+
+
+  axios.get("http://localhost:8081/api/uniform/").then(data => {
+    items.value = data.data
+  }).catch(err => {
+    console.error(err)
+  })
+
+  axios.get("http://localhost:8081/api/book/").then(data => {
+    items.value.push(...data.data)
+  }).catch(err => {
+    console.error(err)
+  })
+
+} )
+
+const filtered = computed( () => {
+  
+  if (filterCategory.value === "all") {
+    return items.value
+  } else {
+    return items.value.filter(item => item.category === filterCategory.value)
+  }
+} );
+
+const searchCompute = computed( () => {
+
+  return filtered.value.filter(item => {
+    return item.name.toLowerCase().includes(search.value.toLowerCase())
+  } )
+
+} )
 </script>

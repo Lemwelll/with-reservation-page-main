@@ -3,4 +3,5 @@ module.exports = {
   singleQuote: false,
   tabWidth: 2,
   camelCase: true,
+  endOfLine: "auto",
 };

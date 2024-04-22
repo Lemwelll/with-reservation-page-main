@@ -1,4 +1,22 @@
+// fetch data from api and store in state
+import axios from "axios";
+
+// async function fetchData() {
+//   let data;
+//   try {
+//     data = (await axios.get("http://localhost:8081/api/uniform/")).data;
+//   } catch (error) {
+//     return []
+//   }
+
+//   console.log(data);
+
+//   return data;
+// }
+
+
 export default function useInventory() {
+  // const inventoryItems = useState("inventoryItems", (): any => fetchData());
   const inventoryItems = useState("inventoryItems", (): TInventoryItem[] => [
     {
       id: Date.now() + 1,
@@ -154,14 +172,14 @@ export default function useInventory() {
     { title: "Uniforms", value: "uniform" },
     { title: "Books", value: "book" },
   ]);
-  const category = ref("all");
+  const category = ref("all"); 
 
   const filterItems = computed(() => {
     if (category.value === "all") {
       return inventoryItems.value;
     }
     return inventoryItems.value.filter(
-      (item) => item.category === category.value,
+      (item: any) => item.category === category.value,
     );
   });
 

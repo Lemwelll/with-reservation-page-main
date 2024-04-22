@@ -103,4 +103,23 @@ definePageMeta({
 });
 const { items: cartItems, increaseItemStock, reduceItemStock } = useCart();
 const { formatNumberIntoString } = useUtils();
+
+function saveCart() {
+  const data = {
+    createDate: new Date(),
+    expiryDate: new Date(),
+    numofItems: cartItems.value.length,
+    totalAmount: cartItems.value.reduce(
+      (acc, item) => acc + item.price, 0
+    ),
+    studentID: "123123123",
+    items: cartItems.value
+  }
+
+  axios.post("http://localhost:8081/api/reservationdetails/", data).then(data => {
+    console.log('Cart added: ', data.data)
+  }).catch(err => {
+    console.error('Cart add error', err)
+  })
+}
 </script>
