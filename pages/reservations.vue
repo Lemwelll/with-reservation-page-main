@@ -42,7 +42,7 @@
           </thead>
           <tbody>
             <template
-              v-for="reservationItem in reservationList"
+              v-for="(reservationItem, index) in reservationList"
               :key="reservationItem.id"
             >
               <tr>
@@ -66,7 +66,7 @@
                       size="small"
                       class="mx-1"
                       :disabled="reservationItem.status !== 'pending'"
-                      @click="completeReservation(reservationItem)"
+                      @click="setReservationStatus(reservationItem, 'completed', index)"
                     >
                       <v-icon>mdi-check-circle</v-icon>
                       <v-tooltip activator="parent" location="bottom">
@@ -81,7 +81,8 @@
                       icon
                       size="small"
                       class="mx-1"
-                      @click="removeReservationItem(reservationItem)"
+                      :disabled="reservationItem.status !== 'pending'"
+                      @click="deleteReservation(reservationItem)"
                     >
                       <v-icon size="small"> mdi-trash-can-outline </v-icon>
                       <v-tooltip activator="parent" location="bottom">
@@ -97,7 +98,7 @@
                       size="small"
                       class="mx-1"
                       :disabled="reservationItem.status !== 'pending'"
-                      @click="declineReservation(reservationItem)"
+                      @click="setReservationStatus(reservationItem, 'declined', index)"
                     >
                       <v-icon> mdi-close-circle </v-icon>
                       <v-tooltip activator="parent" location="bottom">
@@ -120,7 +121,7 @@ import axios from 'axios';
 
 const {
   reservationItems,
-  removeReservationItem,
+  
   completeReservation,
   declineReservation,
 } = useReservation();
@@ -131,6 +132,7 @@ const reservationList = ref([]);
 
 onMounted( () => {
 
+
 axios.get("http://localhost:8081/api/reservationdetails/").then(data => {
   reservationList.value = data.data
 }).catch(err => {
@@ -138,6 +140,40 @@ axios.get("http://localhost:8081/api/reservationdetails/").then(data => {
 })
 
 } )
+
+function removeReservationItem(item) {
+  const index = reservationList.value.findIndex((i) => i.id === item.id);
+  reservationList.value.splice(index, 1);
+}
+function deleteReservation(reservationItem) {
+
+  axios.delete(`http://localhost:8081/api/reservationdetails/${reservationItem.id}`).then(data => {
+    removeReservationItem(reservationItem);
+    alert('Reservation deleted!');
+  }).catch(err => {
+    console.error(err);
+    alert('Oops, something went wrong =( ');
+  })
+
+}
+
+function setReservationStatus(reservationItem, status, index) {
+
+  const formData = new FormData();
+  formData.append('status', status);
+
+  axios.put('http://localhost:8081/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
+    
+    const reservation = reservationItem;
+    reservation['status'] = status;
+
+    reservationItems.value[index] = reservation;
+    alert('Reservation status updated!');
+  }).catch(err => {
+    console.error(err);
+    alert('Oops, something went wrong')
+  })
+}
 
 const sortedReservationItems = computed(() =>
   reservationItems.value.sort((a, b) => b.id - a.id),
