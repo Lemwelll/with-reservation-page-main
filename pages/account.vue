@@ -15,15 +15,15 @@
           <v-col cols="8">
             <v-row no-gutters class="fill-height" align-content="center">
               <v-col cols="12">
-                Full Name: <span class="font-weight-black"> </span>
+                Full Name: <span class="font-weight-black">{{ userInfo.firstName }} {{ userInfo.lastName }}</span>
               </v-col>
 
               <v-col cols="12">
-                Phone Number: <span class="font-weight-black"> </span>
+                Student ID: <span class="font-weight-black">{{ userInfo.studentID }}</span>
               </v-col>
 
               <v-col cols="12">
-                Email: <span class="font-weight-black"> </span>
+                Email: <span class="font-weight-black">{{ userInfo.uicEmail }}</span>
               </v-col>
 
               <v-col cols="12">
@@ -33,6 +33,9 @@
                   inset
                   label="Admin Mode"
                 ></v-switch>
+              </v-col>
+              <v-col cols="12">
+                <v-btn class="mt-5" outlined @click="logout()">Logout</v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -44,4 +47,19 @@
 
 <script setup>
 const { isAdmin } = useLocalAuth();
+
+
+const userInfo = ref({});
+
+onMounted(() => {
+  userInfo.value = localStorage.getItem('studentLogin') ? JSON.parse(localStorage.getItem('studentLogin')) : {};
+
+  console.log(userInfo.value);
+})
+
+function logout() {
+  localStorage.removeItem('studentLogin');
+  alert('Successfuly logged out!');
+  location.href = '/login';
+}
 </script>
