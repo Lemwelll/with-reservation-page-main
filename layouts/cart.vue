@@ -61,6 +61,12 @@ function saveCart() {
 
   const formData = new FormData()
 
+  const userInfo = JSON.parse(localStorage.getItem('studentLogin'));
+
+  if (!userInfo.studentID) {
+    alert('Please login first');
+  }
+
   const data = {
     createDate: new Date(),
     expiryDate: new Date(),
@@ -68,7 +74,7 @@ function saveCart() {
     totalAmount: items.value.reduce(
       (acc, item) => acc + item.price, 0
     ),
-    studentID: 123123123,
+    studentID: userInfo.studentID,
     items: JSON.stringify(items.value)
   }
 

@@ -67,7 +67,7 @@
                       class="font-weight-bold"
                       elevation="2"
                       :disabled="!valid"
-                      type="submit"
+                      @click="login()"
                     >
                       Sign In
                     </v-btn>
@@ -86,8 +86,9 @@
   </v-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useUtils from "~/composables/useUtils";
+import axios from 'axios';
 definePageMeta({
   layout: "plain",
 });
@@ -96,6 +97,36 @@ const show = ref(false);
 const valid = ref(false);
 const email = ref("");
 const password = ref("");
+
+function login() {
+
+console.log(email, password);
+
+const formData = new FormData();
+
+const data: any = {
+  uicEmail: email.value,
+  password: password.value
+}
+
+// convert data into formData
+Object.keys(data).forEach(key => formData.append(key, data[key]));
+
+axios.post('http://localhost:8081/api/student/login', formData).then( (res: any) => {
+  if (res.data.studentID) {
+    localStorage.setItem('studentLogin', JSON.stringify(res.data));
+    alert(`Signup success. Welcome ${res.data.firstName}`)
+    location.href = '/store'
+  } else {
+    alert('Login Error. Please try again!')
+  }
+}).catch( (err: any) => {
+  alert('Oops, something went wrong');
+  console.error(err);
+} )
+
+
+}
 
 async function submit() {
   await useRouter().push({

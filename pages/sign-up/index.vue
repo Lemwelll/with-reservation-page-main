@@ -8,7 +8,6 @@
               v-model="valid"
               @submit.prevent="
                 signup({
-                  id: form.id,
                   firstName: form.firstName,
                   lastName: form.lastName,
                   email: form.email,
@@ -124,8 +123,9 @@
   </v-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useUtils from "~/composables/useUtils";
+import axios from 'axios';
 const { requiredInput, validEmail, minPasswordLength } = useUtils();
 const valid = ref(false);
 const show = ref(false);
@@ -137,13 +137,38 @@ const form = ref({
   password: "",
 });
 
-const { signup: createNewUser } = useLocalAuth();
+// const { signup: createNewUser } = useLocalAuth();
 
-async function signup({ id = "", email = "", password = "", firstName ="", lastName="" }) {
-  try {
-    await createNewUser({ id, email, password, firstName, lastName });
-    
-  } catch (error) {}
+function signup({ email = "", password = "", firstName = "", lastName = "", } = {}) {
+
+console.log(email, password);
+
+const formData = new FormData();
+
+const data: any = {
+  uicEmail: email,
+  password: password,
+  firstName: firstName,
+  lastName: lastName
+}
+
+// convert data into formData
+Object.keys(data).forEach(key => formData.append(key, data[key]));
+
+axios.post('http://localhost:8081/api/student/', formData).then( (res: any) => {
+  if (res.data.studentID) {
+    localStorage.setItem('studentLogin', JSON.stringify(res.data));
+    alert(`Signup success. Welcome ${res.data.firstName}`)
+    location.href = '/store'
+  } else {
+    alert('Login Error. Please try again!')
+  }
+}).catch( (err: any) => {
+  alert('Oops, something went wrong');
+  console.error(err);
+} )
+
+
 }
 
 definePageMeta({
