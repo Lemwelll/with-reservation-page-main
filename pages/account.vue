@@ -25,15 +25,6 @@
               <v-col cols="12">
                 Email: <span class="font-weight-black">{{ userInfo.uicEmail }}</span>
               </v-col>
-
-              <v-col cols="12">
-                <v-switch
-                  v-model="isAdmin"
-                  hide-details
-                  inset
-                  label="Admin Mode"
-                ></v-switch>
-              </v-col>
               <v-col cols="12">
                 <v-btn class="mt-5" outlined @click="logout()">Logout</v-btn>
               </v-col>
