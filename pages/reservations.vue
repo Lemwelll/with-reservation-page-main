@@ -126,12 +126,13 @@ const {
   declineReservation,
 } = useReservation();
 const { formatNumberIntoString } = useUtils();
-const { isAdmin } = useLocalAuth();
+// const { isAdmin } = useLocalAuth();
 
 const reservationList = ref([]);
 
-onMounted( () => {
+const isAdmin = ref(false);
 
+onMounted( () => {
 
 axios.get("http://localhost:8081/api/reservationdetails/").then(data => {
   reservationList.value = data.data
