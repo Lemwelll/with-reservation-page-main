@@ -7,22 +7,42 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
         console.log(to.path);
 
-        const publicRoutes = [
-          '/',
-          '/login',
-          '/sign-up',
-          '/forgot-password',
-        ]
-    
-        const checkCredentials = JSON.parse(localStorage.getItem('studentLogin') || '{}');
-        
-        if (publicRoutes.includes(to.path) && checkCredentials.studentID) {
-          return navigateTo('/home')
+
+        if (to.path.indexOf('/admin') == 0) {
+
+          const checkAdminCredentials = JSON.parse(localStorage.getItem('adminLogin') || '{}');
+
+          if (to.path === '/admin' && checkAdminCredentials.adminID) {
+            return navigateTo('/admin/dashboard');
+          }
+
+          if ((!to.path == '/admin' || to.path == '/reservations' ) && !checkAdminCredentials.adminID) {
+            alert('Login first');
+            return navigateTo('/admin');
+          }
+
+        }
+        else {
+
+          const publicRoutes = [
+            '/',
+            '/login',
+            '/sign-up',
+            '/forgot-password',
+            '/admin'
+          ]
+      
+          const checkCredentials = JSON.parse(localStorage.getItem('studentLogin') || '{}');
+          
+          if (publicRoutes.includes(to.path) && checkCredentials.studentID) {
+            return navigateTo('/home')
+          }
+  
+          if (!publicRoutes.includes(to.path) && !checkCredentials.studentID) {
+            alert('Login first!');
+            return navigateTo('/')
         }
 
-        if (!publicRoutes.includes(to.path) && !checkCredentials.studentID) {
-          alert('Login first!');
-          return navigateTo('/')
         }
     
     }
