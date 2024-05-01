@@ -134,7 +134,9 @@ const isAdmin = ref(false);
 
 onMounted( () => {
 
-axios.get("http://localhost:8081/api/reservationdetails/").then(data => {
+const getStudentLogin = JSON.parse(localStorage.getItem('studentLogin'));
+
+axios.post("http://localhost:8081/api/reservationdetails/"+getStudentLogin.studentID).then(data => {
   reservationList.value = data.data
 }).catch(err => {
   console.error(err)
