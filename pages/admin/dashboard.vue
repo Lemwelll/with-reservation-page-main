@@ -45,7 +45,8 @@
             </tr>
           </tbody>
         </v-table> -->
-        <v-data-table :items="items" :headers="headers">
+        <v-text-field label="Search stocks" size="lg" prepend-inner-icon="mdi-magnify" v-model="search"></v-text-field>
+        <v-data-table :items="items" :headers="headers" :search="search" :items-per-page="50">
           <template v-slot:item.actions="{ value, item }">
             <v-btn icon flat small class="text-orange" size="small" @click="editItem(item)">
               <v-icon>mdi-pencil</v-icon>
@@ -108,6 +109,8 @@ definePageMeta({
 });
 
 const userInfo = ref({});
+
+const search = ref('');
 
 const isModalActive = ref(false);
 
