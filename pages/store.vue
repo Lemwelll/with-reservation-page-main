@@ -123,7 +123,7 @@ onMounted( () => {
 
 
   axios.get("http://localhost:8081/api/uniform/").then(data => {
-    items.value = data.data
+    items.value.push(...data.data)
   }).catch(err => {
     console.error(err)
   })
