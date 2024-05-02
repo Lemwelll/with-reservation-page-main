@@ -122,13 +122,13 @@ const search = ref("");
 onMounted( () => {
 
 
-  axios.get("https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/uniform/").then(data => {
+  axios.get("https://bookstore-backend-api.vercel.app/api/uniform/").then(data => {
     items.value.push(...data.data)
   }).catch(err => {
     console.error(err)
   })
 
-  axios.get("https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/book/").then(data => {
+  axios.get("https://bookstore-backend-api.vercel.app/api/book/").then(data => {
     items.value.push(...data.data)
   }).catch(err => {
     console.error(err)

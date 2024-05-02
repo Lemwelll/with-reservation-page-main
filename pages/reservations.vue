@@ -136,7 +136,7 @@ onMounted( () => {
 
 const getStudentLogin = JSON.parse(localStorage.getItem('studentLogin'));
 
-axios.post("https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/reservationdetails/"+getStudentLogin.studentID).then(data => {
+axios.post("https://bookstore-backend-api.vercel.app/api/reservationdetails/"+getStudentLogin.studentID).then(data => {
   reservationList.value = data.data
 }).catch(err => {
   console.error(err)
@@ -150,7 +150,7 @@ function removeReservationItem(item) {
 }
 function deleteReservation(reservationItem) {
 
-  axios.delete(`https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/reservationdetails/${reservationItem.id}`).then(data => {
+  axios.delete(`https://bookstore-backend-api.vercel.app/api/reservationdetails/${reservationItem.id}`).then(data => {
     removeReservationItem(reservationItem);
     alert('Reservation deleted!');
   }).catch(err => {
@@ -165,7 +165,7 @@ function setReservationStatus(reservationItem, status, index) {
   const formData = new FormData();
   formData.append('status', status);
 
-  axios.put('https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
+  axios.put('https://bookstore-backend-api.vercel.app/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
     
     const reservation = reservationItem;
     reservation['status'] = status;
