@@ -87,7 +87,7 @@ function saveCart() {
 
   axios({
     method: 'post',
-    url: "http://localhost:8081/api/reservationdetails/",
+    url: "https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/reservationdetails/",
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   }).then(data => {

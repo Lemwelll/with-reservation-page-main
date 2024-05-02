@@ -146,13 +146,13 @@ onMounted(() => {
 
   console.log(userInfo.value);
 
-  axios.get("http://localhost:8081/api/uniform/").then(data => {
+  axios.get("https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/uniform/").then(data => {
     items.value.push(...data.data)
   }).catch(err => {
     console.error(err)
   })
 
-  axios.get("http://localhost:8081/api/book/").then(data => {
+  axios.get("https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/book/").then(data => {
     items.value.push(...data.data)
   }).catch(err => {
     console.error(err)
@@ -174,7 +174,7 @@ function save() {
       formData.append('uniformQuantityAvailability', uniformQuantityAvailability.value);
       formData.append('uniformPriceDetails', uniformPriceDetails.value);
   
-      axios.post('http://localhost:8081/api/uniform/', formData).then(data => {
+      axios.post('https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/uniform/', formData).then(data => {
   
         if (data.data.uniformID) {
           alert('Uniform added successfully!');
@@ -199,7 +199,7 @@ function save() {
       formData.append('bookquantityAvailability', bookquantityAvailability.value);
       formData.append('bookpriceDetails', bookpriceDetails.value);
   
-      axios.post('http://localhost:8081/api/book/', formData).then(data => {
+      axios.post('https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/book/', formData).then(data => {
   
         if (data.data.bookID) {
           alert('Book added successfully!');
@@ -227,7 +227,7 @@ function save() {
       formData.append('uniformQuantityAvailability', uniformQuantityAvailability.value);
       formData.append('uniformPriceDetails', uniformPriceDetails.value);
 
-      axios.put('http://localhost:8081/api/uniform/'+editID.value, formData).then(data => {
+      axios.put('https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/uniform/'+editID.value, formData).then(data => {
 
         if (data.data.message) {
           alert('Uniform edited successfully!');
@@ -253,7 +253,7 @@ function save() {
       formData.append('bookquantityAvailability', bookquantityAvailability.value);
       formData.append('bookpriceDetails', bookpriceDetails.value);
   
-      axios.put('http://localhost:8081/api/book/'+editID.value, formData).then(data => {
+      axios.put('https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/book/'+editID.value, formData).then(data => {
   
         if (data.data.message) {
           alert('book edited successfully!');
@@ -330,7 +330,7 @@ function deleteItem(item) {
   if (!confirm('ARe you sure you want to delete this item?')) return;
 
   if (item.category == 'uniform') {
-    axios.delete('http://localhost:8081/api/uniform/'+item.id).then(data => {
+    axios.delete('https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/uniform/'+item.id).then(data => {
   
       if (data.data.message) {
         alert('uniform deleted successfully!');
@@ -347,7 +347,7 @@ function deleteItem(item) {
   }
   else {
     if (item.category == 'book') {
-    axios.delete('http://localhost:8081/api/book/'+item.id).then(data => {
+    axios.delete('https://bookstore-backend-p51wzp365-lemwellls-projects.vercel.app/api/book/'+item.id).then(data => {
   
       if (data.data.message) {
         alert('Book deleted successfully!');
