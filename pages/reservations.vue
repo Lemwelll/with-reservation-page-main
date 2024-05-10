@@ -52,7 +52,8 @@
                 <td>{{ reservationItem.studentName }}</td>
                 <td><v-chip class="ma-2 " v-for="item in JSON.parse(JSON.parse(reservationItem.items))" :key="item.id">
                   <v-icon class="mr-2">mdi-cart</v-icon>
-                  [P {{ item.price }}.00] {{ item.name }}
+                  <!-- [P {{ item.price }}.00] {{ item.name }} -->
+                  [Quantity: {{ item.stock }}] [₱{{ item.totalPrice }}.00] {{ item.name }}
                 </v-chip></td>
                 <td>{{ formatNumberIntoString(reservationItem.total) }}</td>
                 <td>{{ reservationItem.status }}</td>
@@ -65,7 +66,7 @@
                       icon
                       size="small"
                       class="mx-1"
-                      :disabled="reservationItem.status !== 'pending'"
+                      :disabled="reservationItem.status === 'Completed'"
                       @click="setReservationStatus(reservationItem, 'completed', index)"
                     >
                       <v-icon>mdi-check-circle</v-icon>
@@ -81,7 +82,7 @@
                       icon
                       size="small"
                       class="mx-1"
-                      :disabled="reservationItem.status !== 'pending'"
+                      :disabled="reservationItem.status === 'Completed'"
                       @click="deleteReservation(reservationItem)"
                     >
                       <v-icon size="small"> mdi-trash-can-outline </v-icon>
@@ -97,7 +98,7 @@
                       icon
                       size="small"
                       class="mx-1"
-                      :disabled="reservationItem.status !== 'pending'"
+                      :disabled="reservationItem.status === 'Completed'"
                       @click="setReservationStatus(reservationItem, 'declined', index)"
                     >
                       <v-icon> mdi-close-circle </v-icon>
@@ -121,7 +122,7 @@ import axios from 'axios';
 
 const {
   reservationItems,
-  
+
   completeReservation,
   declineReservation,
 } = useReservation();
@@ -166,7 +167,7 @@ function setReservationStatus(reservationItem, status, index) {
   formData.append('status', status);
 
   axios.put('https://bookstore-backend-api.vercel.app/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
-    
+
     const reservation = reservationItem;
     reservation['status'] = status;
 

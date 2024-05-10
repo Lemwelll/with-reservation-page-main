@@ -9,6 +9,7 @@ declare global {
     stock: number;
     size: string;
     image: string;
+    totalPrice: number; // added total price
   }
 
   type TReservationItem = {

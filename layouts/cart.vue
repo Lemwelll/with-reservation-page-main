@@ -72,14 +72,16 @@ function saveCart() {
     expiryDate: new Date(),
     numofItems: items.value.length,
     totalAmount: items.value.reduce(
-      (acc, item) => acc + item.price, 0
+      (acc, item) => acc + item.totalPrice, 0
     ),
     studentID: userInfo.studentID,
     items: JSON.stringify(items.value)
   }
 
-  
 
+  console.log('DATAAA', data)
+
+ 
   Object.keys(data).forEach(key => {
     console.log(key, data[key]);
     formData.append(key, data[key]);
@@ -97,6 +99,7 @@ function saveCart() {
     alert('Opps, something went wrong');
     console.error('Cart add error', err)
   })
+
 }
 
 function proceedToReservation(item) {

@@ -7,7 +7,7 @@
             <v-row no-gutters class="pa-8">
               <v-col cols="12"> Earnings(Monthly) </v-col>
               <v-col cols="12" class="text-h6 font-weight-bold">
-                PHP 25,000.00
+                PHP {{ monthlyEarnings }}
               </v-col>
             </v-row>
           </v-card>
@@ -18,7 +18,7 @@
             <v-row no-gutters class="pa-8">
               <v-col cols="12"> Earnings(Daily) </v-col>
               <v-col cols="12" class="text-h6 font-weight-bold">
-                PHP 5,000.00
+                PHP {{ dailyEarnings }}
               </v-col>
             </v-row>
           </v-card>
@@ -47,17 +47,27 @@
             >
               <tr>
                 <td>{{ reservationItem.id }}</td>
-                <td>{{ reservationItem.date }}</td>
+                <td>{{ formatDate(reservationItem.date) }}</td>
                 <td>{{ reservationItem.student }}</td>
                 <td>{{ reservationItem.studentName }}</td>
-                <td><v-chip class="ma-2 " v-for="item in JSON.parse(JSON.parse(reservationItem.items))" :key="item.id">
-                  <v-icon class="mr-2">mdi-cart</v-icon>
-                  [P {{ item.price }}.00] {{ item.name }}
-                </v-chip></td>
+                <td>
+                  <v-chip 
+                    class="mt-1"
+                    style="font-size: .60rem; font-weight: bold; padding: 150x; display: flex; justify-content: center; align-items: center;" 
+                    v-for="item in JSON.parse(JSON.parse(reservationItem.items))" :key="item.id" 
+                    @click="handleChipClick(reservationItem, item, reservationItem.id)"
+                    
+                  > 
+                      <v-icon class="mr-2">mdi-cart</v-icon>
+                      <!-- [P {{ item.price }}.00] {{ item.name }} -->
+                      [Quantity: {{ item.stock }}] [₱{{ item.totalPrice }}.00] {{ item.name }}
+                  </v-chip>
+                </td>
                 <td>{{ formatNumberIntoString(reservationItem.total) }}</td>
                 <td>{{ reservationItem.status }}</td>
                 <td>
-                  <v-row no-gutters align="center" justify="center">
+                  <v-row justify="center">
+                    <!-- Approve Button -->
                     <v-btn
                       v-if="isAdmin"
                       variant="text"
@@ -65,47 +75,42 @@
                       icon
                       size="small"
                       class="mx-1"
-                      :disabled="reservationItem.status !== 'pending'"
-                      @click="setReservationStatus(reservationItem, 'completed', index)"
+                      :disabled="reservationItem.status === 'Completed'"
+                      @click="setReservationStatus(reservationItem, 'Approved', index)"
+                    >
+                      <v-icon>mdi-checkbox-marked-circle</v-icon>
+                      <v-tooltip activator="parent" location="bottom">Approved</v-tooltip>
+                    </v-btn>
+
+                    <!-- Complete Button -->
+                    <v-btn
+                      v-if="isAdmin"
+                      variant="text"
+                      density="compact"
+                      icon
+                      size="small"
+                      class="mx-1"
+                      :disabled="reservationItem.status === 'Completed'"
+                      @click="setReservationStatus(reservationItem, 'Completed', index)"
                     >
                       <v-icon>mdi-check-circle</v-icon>
-                      <v-tooltip activator="parent" location="bottom">
-                        Complete
-                      </v-tooltip>
+                      <v-tooltip activator="parent" location="bottom">Complete</v-tooltip>
                     </v-btn>
 
+                    <!-- Delete Button -->
                     <v-btn
-                      v-if="!isAdmin"
                       variant="text"
                       density="compact"
                       icon
                       size="small"
                       class="mx-1"
-                      :disabled="reservationItem.status !== 'pending'"
+                      :disabled="reservationItem.status === 'Completed'"
                       @click="deleteReservation(reservationItem)"
                     >
-                      <v-icon size="small"> mdi-trash-can-outline </v-icon>
-                      <v-tooltip activator="parent" location="bottom">
-                        Delete
-                      </v-tooltip>
+                      <v-icon size="small">mdi-trash-can-outline</v-icon>
+                      <v-tooltip activator="parent" location="bottom">Delete</v-tooltip>
                     </v-btn>
-
-                    <v-btn
-                      v-if="isAdmin"
-                      variant="text"
-                      density="compact"
-                      icon
-                      size="small"
-                      class="mx-1"
-                      :disabled="reservationItem.status !== 'pending'"
-                      @click="setReservationStatus(reservationItem, 'declined', index)"
-                    >
-                      <v-icon> mdi-close-circle </v-icon>
-                      <v-tooltip activator="parent" location="bottom">
-                        Decline
-                      </v-tooltip>
-                    </v-btn>
-                  </v-row>
+                 </v-row>
                 </td>
               </tr>
             </template>
@@ -146,23 +151,7 @@ axios.get("https://bookstore-backend-api.vercel.app/api/reservationdetails/").th
   console.error(err)
 })
 
-} )
-
-function removeReservationItem(item) {
-  const index = reservationList.value.findIndex((i) => i.id === item.id);
-  reservationList.value.splice(index, 1);
-}
-function deleteReservation(reservationItem) {
-
-  axios.delete(`https://bookstore-backend-api.vercel.app/api/reservationdetails/${reservationItem.id}`).then(data => {
-    removeReservationItem(reservationItem);
-    alert('Reservation deleted!');
-  }).catch(err => {
-    console.error(err);
-    alert('Oops, something went wrong =( ');
-  })
-
-}
+})
 
 function setReservationStatus(reservationItem, status, index) {
 
@@ -180,6 +169,106 @@ function setReservationStatus(reservationItem, status, index) {
     console.error(err);
     alert('Oops, something went wrong')
   })
+}
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const options = { month: 'long', day: 'numeric', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+};
+
+
+function handleChipClick(reservationItem, item, reservationId) {
+  const listItem = reservationList.value.find(item => item.id === reservationId);
+  let items = JSON.parse(JSON.parse(listItem.items));
+
+  const index = items.findIndex(i => i.id === item.id);
+  
+  if (index !== -1) {
+    items.splice(index, 1);
+
+    // Update the reservationList
+    const idx = reservationList.value.findIndex(item => item.id === reservationId);
+    reservationList.value.splice(idx, 1, listItem);
+
+    const newTotal = listItem.total - item.totalPrice;
+    const formData = new FormData();
+
+    formData.append('items', JSON.stringify(items)); 
+    formData.append('totalAmount', newTotal);
+
+    axios.put('https://bookstore-backend-api.vercel.app/api/reservationdetails/items/' + listItem.id, formData).then(result => {
+      const reservation = listItem;
+      reservation['items'] = JSON.stringify(items);
+      reservation['totalAmount'] = newTotal; // Update items in reservation object
+
+      reservationItems.value[index] = reservation;
+      alert('Resrvation item deleted successfully!');
+      window.location.reload(); // Refresh the page after alert
+    }).catch(err => {
+      console.error(err);
+      alert('Oops, something went wrong')
+    })
+  }
+}
+
+function testerr(item, reservationId) {
+  const reservationItem = reservationList.value.find(item => item.id === reservationId);
+  let items = JSON.parse(JSON.parse(reservationItem.items));
+
+  // Find the index of the clicked item
+  const index = items.findIndex(i => i.id === item.id);
+  
+  if (index !== -1) {
+    // Remove the item from the items array
+    items.splice(index, 1);
+
+
+    // Update the reservationList
+    const idx = reservationList.value.findIndex(item => item.id === reservationId);
+    reservationList.value.splice(idx, 1, reservationItem);
+    
+    console.log('Item removed:', item);
+    console.log('Updated items:', items);
+  }
+}
+
+const getEarningsByPeriod = (period) => {
+  const today = new Date();
+  const filteredList = reservationList.value.filter((reservation) => {
+    const reservationDate = new Date(reservation.date);
+    return period === 'monthly' ?
+      reservationDate.getMonth() === today.getMonth() :
+      reservationDate.getDate() === today.getDate();
+  });
+
+  return filteredList.reduce((total, reservation) => total + reservation.total, 0);
+};
+
+const monthlyEarnings = computed(() => {
+  const earnings = getEarningsByPeriod('monthly');
+  return earnings.toFixed(2);
+});
+
+const dailyEarnings = computed(() => {
+  const earnings = getEarningsByPeriod('daily');
+  return earnings.toFixed(2);
+});
+
+function removeReservationItem(item) {
+  const index = reservationList.value.findIndex((i) => i.id === item.id);
+  reservationList.value.splice(index, 1);
+}
+function deleteReservation(reservationItem) {
+
+  axios.delete(`https://bookstore-backend-api.vercel.app/api/reservationdetails/${reservationItem.id}`).then(data => {
+    removeReservationItem(reservationItem);
+    alert('Reservation deleted!');
+  }).catch(err => {
+    console.error(err);
+    alert('Oops, something went wrong =( ');
+  })
+
 }
 
 const sortedReservationItems = computed(() =>

@@ -165,7 +165,7 @@ axios.post('https://bookstore-backend-api.vercel.app/api/student/', formData).th
   }
 }).catch( (err: any) => {
   alert('Oops, something went wrong');
-  console.error(err);
+  console.log('ERRORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR', err);
 } )
 
 

@@ -137,7 +137,7 @@ onMounted( () => {
 } )
 
 const filtered = computed( () => {
-  
+
   if (filterCategory.value === "all") {
     return items.value
   } else {

@@ -9,6 +9,15 @@
       >
         view reservations
       </v-btn>
+      <v-btn
+        small
+        variant="outlined"
+        rounded="xl"
+        :to="{ name: 'store' }"
+        class="ml-2"
+      >
+        go back to store
+      </v-btn>
     </v-col>
     <v-col cols="12" class="mt-4">
       <v-row no-gutters>
@@ -98,9 +107,11 @@
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "cart",
-});
-const { items: cartItems, increaseItemStock, reduceItemStock } = useCart();
-const { formatNumberIntoString } = useUtils();
+  definePageMeta({
+    layout: "cart",
+  });
+  const { items: cartItems, increaseItemStock, reduceItemStock } = useCart();
+  const { formatNumberIntoString } = useUtils();
+
+  console.log('cartItems', cartItems)
 </script>
