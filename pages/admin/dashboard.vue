@@ -73,6 +73,7 @@
                 </div>
                 <div v-if="productType === 'book'">
                   <v-text-field label="mngbkstore" v-model="mngbkstore" class="my-3" />
+                  <v-text-field label="mngstore" v-model="mngstore" class="my-3" />
                   <v-text-field label="bookTitle" v-model="bookTitle" class="my-3" />
                   <v-text-field label="bookquantityAvailability" type="number" v-model.number="bookquantityAvailability" class="my-3" />
                   <v-text-field label="bookpriceDetails" type="number" v-model.number="bookpriceDetails" class="my-3" />
@@ -194,7 +195,9 @@ function save() {
     if (productType.value === 'book') {
       const formData = new FormData();
   
+      formData.append('mngstore', mngstore.value);
       formData.append('mngbkstore', mngbkstore.value);
+      formData.append('mngstore', 'mngstore');
       formData.append('bookTitle', bookTitle.value);
       formData.append('bookquantityAvailability', bookquantityAvailability.value);
       formData.append('bookpriceDetails', bookpriceDetails.value);
