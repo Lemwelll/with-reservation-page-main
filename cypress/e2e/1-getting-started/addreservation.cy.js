@@ -1,7 +1,7 @@
 describe('Store Page', () => {
     beforeEach(() => {
       // Visit the store page before each test
-      cy.visit('https://bookstore-backend-api.vercel.app/store');
+      cy.visit('http://localhost:8000/store');
     });
     it('displays confirmation message for successful reservation', () => {
       // Write test steps to verify successful reservation confirmation message

@@ -101,7 +101,7 @@ const data: any = {
 // convert data into formData
 Object.keys(data).forEach(key => formData.append(key, data[key]));
 
-axios.post('https://bookstore-backend-api.vercel.app/api/admin/login', formData).then( (res: any) => {
+axios.post('http://localhost:8000/api/admin/login', formData).then( (res: any) => {
   if (res.data.adminID) {
     localStorage.setItem('adminLogin', JSON.stringify(res.data));
     alert(`Admin Login success. Welcome ${res.data.username}`)

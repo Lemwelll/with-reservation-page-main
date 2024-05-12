@@ -76,7 +76,7 @@
                       size="small"
                       class="mx-1"
                       :disabled="reservationItem.status === 'Completed'"
-                      @click="setReservationStatus(reservationItem, 'Approved', index)"
+                      @click="setReservationStatus(reservationItem, 'Approved', reservationItem.student, 'Your reservation is approved', index)"
                     >
                       <v-icon>mdi-checkbox-marked-circle</v-icon>
                       <v-tooltip activator="parent" location="bottom">Approved</v-tooltip>
@@ -91,7 +91,7 @@
                       size="small"
                       class="mx-1"
                       :disabled="reservationItem.status === 'Completed'"
-                      @click="setReservationStatus(reservationItem, 'Completed', index)"
+                      @click="setReservationStatus(reservationItem, 'Completed', reservationItem.student, 'Your reservation is completed', index)"
                     >
                       <v-icon>mdi-check-circle</v-icon>
                       <v-tooltip activator="parent" location="bottom">Complete</v-tooltip>
@@ -105,7 +105,7 @@
                       size="small"
                       class="mx-1"
                       :disabled="reservationItem.status === 'Completed'"
-                      @click="deleteReservation(reservationItem)"
+                      @click="deleteReservation(reservationItem, reservationItem.student, 'Sorry, your reservation was declined and deleted.', index)"
                     >
                       <v-icon size="small">mdi-trash-can-outline</v-icon>
                       <v-tooltip activator="parent" location="bottom">Delete</v-tooltip>
@@ -145,7 +145,7 @@ onMounted( () => {
 
 isAdmin.value = JSON.parse(localStorage.getItem('adminLogin')).adminID ? true : false;
 
-axios.get("https://bookstore-backend-api.vercel.app/api/reservationdetails/").then(data => {
+axios.get("http://localhost:8000/api/reservationdetails/").then(data => {
   reservationList.value = data.data
 }).catch(err => {
   console.error(err)
@@ -153,15 +153,18 @@ axios.get("https://bookstore-backend-api.vercel.app/api/reservationdetails/").th
 
 })
 
-function setReservationStatus(reservationItem, status, index) {
-
+function setReservationStatus(reservationItem, status, studentID, message, index) {
   const formData = new FormData();
   formData.append('status', status);
+  formData.append('studentID', studentID);
+  formData.append('message', message);
 
-  axios.put('https://bookstore-backend-api.vercel.app/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
+  axios.put('http://localhost:8000/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
     
     const reservation = reservationItem;
     reservation['status'] = status;
+    reservation['studentID'] = studentID;
+    reservation['message'] = message;
 
     reservationItems.value[index] = reservation;
     alert('Reservation status updated!');
@@ -170,6 +173,38 @@ function setReservationStatus(reservationItem, status, index) {
     alert('Oops, something went wrong')
   })
 }
+
+function deleteReservation(reservationItem, studentID, message, index) {
+  const formData = new FormData();
+  formData.append('studentID', studentID);
+  formData.append('message', message);
+
+  axios({
+    method: 'delete',
+    url: `http://localhost:8000/api/reservationdetailsadmin/${reservationItem.id}`,
+    data: formData,
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
+    .then(result => {
+      removeReservationItem(reservationItem);
+
+      const reservation = reservationItem;
+      reservation['studentID'] = studentID;
+      reservation['message'] = message;
+
+      reservationItems.value[index] = reservation;
+      alert('Reservation deleted!');
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Oops, something went wrong');
+    });
+}
+
+
+
+
+
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -197,7 +232,7 @@ function handleChipClick(reservationItem, item, reservationId) {
     formData.append('items', JSON.stringify(items)); 
     formData.append('totalAmount', newTotal);
 
-    axios.put('https://bookstore-backend-api.vercel.app/api/reservationdetails/items/' + listItem.id, formData).then(result => {
+    axios.put('http://localhost:8000/api/reservationdetails/items/' + listItem.id, formData).then(result => {
       const reservation = listItem;
       reservation['items'] = JSON.stringify(items);
       reservation['totalAmount'] = newTotal; // Update items in reservation object
@@ -212,26 +247,6 @@ function handleChipClick(reservationItem, item, reservationId) {
   }
 }
 
-function testerr(item, reservationId) {
-  const reservationItem = reservationList.value.find(item => item.id === reservationId);
-  let items = JSON.parse(JSON.parse(reservationItem.items));
-
-  // Find the index of the clicked item
-  const index = items.findIndex(i => i.id === item.id);
-  
-  if (index !== -1) {
-    // Remove the item from the items array
-    items.splice(index, 1);
-
-
-    // Update the reservationList
-    const idx = reservationList.value.findIndex(item => item.id === reservationId);
-    reservationList.value.splice(idx, 1, reservationItem);
-    
-    console.log('Item removed:', item);
-    console.log('Updated items:', items);
-  }
-}
 
 const getEarningsByPeriod = (period) => {
   const today = new Date();
@@ -259,17 +274,7 @@ function removeReservationItem(item) {
   const index = reservationList.value.findIndex((i) => i.id === item.id);
   reservationList.value.splice(index, 1);
 }
-function deleteReservation(reservationItem) {
 
-  axios.delete(`https://bookstore-backend-api.vercel.app/api/reservationdetails/${reservationItem.id}`).then(data => {
-    removeReservationItem(reservationItem);
-    alert('Reservation deleted!');
-  }).catch(err => {
-    console.error(err);
-    alert('Oops, something went wrong =( ');
-  })
-
-}
 
 const sortedReservationItems = computed(() =>
   reservationItems.value.sort((a, b) => b.id - a.id),

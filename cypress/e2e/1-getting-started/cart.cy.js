@@ -2,7 +2,7 @@
 
 describe('Bookstore Reservation System', () => {
     beforeEach(() => {
-      cy.visit('https://bookstore-backend-api.vercel.app/cart') // Assuming your Vue app is served at the root URL
+      cy.visit('http://localhost:8000/cart') // Assuming your Vue app is served at the root URL
     })
     it('should not display total payment when cart is empty', () => {
         cy.get('.v-footer__content .text-h6').should('not.exist');  // Uses negative assertion
@@ -16,12 +16,12 @@ describe('Bookstore Reservation System', () => {
     
     it('should navigate to cart page when clicking on the cart icon', () => {
       cy.get('.mdi-cart-outline').click()
-      cy.url().should('include', 'https://bookstore-backend-api.vercel.app/cart')
+      cy.url().should('include', 'http://localhost:8000/cart')
     })
   
     it('should navigate to account page when clicking on the account icon', () => {
       cy.get('.mdi-account').click()
-      cy.url().should('include', 'https://bookstore-backend-api.vercel.app/account')
+      cy.url().should('include', 'http://localhost:8000/account')
     })
     })
   

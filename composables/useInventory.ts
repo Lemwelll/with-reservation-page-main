@@ -4,7 +4,7 @@ import axios from "axios";
 // async function fetchData() {
 //   let data;
 //   try {
-//     data = (await axios.get("https://bookstore-backend-api.vercel.app/api/uniform/")).data;
+//     data = (await axios.get("http://localhost:8000/api/uniform/")).data;
 //   } catch (error) {
 //     return []
 //   }

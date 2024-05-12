@@ -9,10 +9,12 @@
         UIC Online Bookstore Reservation System
       </span>
       <v-spacer></v-spacer>
-      <v-btn icon class="mx-1">
-        <v-icon color="primary">mdi-bell-outline</v-icon>
+      <v-btn icon class="mx-1" :to="{ name: 'notification' }">
+        <v-badge :content="notifications.filter(notification => notification.read === 0).length" color="primary">
+          <v-icon color="primary">mdi-bell-outline</v-icon>
+        </v-badge>
       </v-btn>
-      <v-btn icon class="mx-1" :to="{ name: 'cart' }">
+      <v-btn icon class="mx-1" :to="{ name: 'cart' }"> 
         <v-badge :content="items.length" color="primary">
           <v-icon color="primary">mdi-cart-outline</v-icon>
         </v-badge>
@@ -29,4 +31,5 @@
 
 <script setup>
 const { items } = useCart();
+const { notifications } = useNotification();
 </script>
