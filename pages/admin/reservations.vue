@@ -2,7 +2,7 @@
   <v-row no-gutters class="pa-4" justify="center">
     <v-col v-if="isAdmin" cols="12">
       <v-row>
-        <v-col cols="12" xxl="4" xl="4" lg="4">
+        <v-col cols="12" xxl="3" xl="3" lg="3" md="6" sm="12">
           <v-card width="100%">
             <v-row no-gutters class="pa-8">
               <v-col cols="12"> Earnings(Monthly) </v-col>
@@ -13,7 +13,7 @@
           </v-card>
         </v-col>
 
-        <v-col cols="12" xxl="4" xl="4" lg="4">
+        <v-col cols="12" xxl="3" xl="3" lg="3" md="6" sm="12">
           <v-card width="100%">
             <v-row no-gutters class="pa-8">
               <v-col cols="12"> Earnings(Daily) </v-col>
@@ -23,8 +23,31 @@
             </v-row>
           </v-card>
         </v-col>
+
+        <v-col cols="12" xxl="3" xl="3" lg="3" md="6" sm="12">
+          <v-card width="100%">
+            <v-row no-gutters class="pa-8">
+              <v-col cols="12"> Earnings(Uniform) </v-col>
+              <v-col cols="12" class="text-h6 font-weight-bold">
+                PHP {{ uniformEarnings.toFixed(2) }}
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" xxl="3" xl="3" lg="3" md="6" sm="12">
+          <v-card width="100%">
+            <v-row no-gutters class="pa-8">
+              <v-col cols="12"> Earnings(Book) </v-col>
+              <v-col cols="12" class="text-h6 font-weight-bold">
+                PHP {{ bookEarnings.toFixed(2) }}
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
       </v-row>
     </v-col>
+
     <v-col cols="12" class="mt-4">
       <v-card flat style="border-width: thin">
         <v-table density="compact" fixed-header style="max-height: 67vh">
@@ -268,6 +291,20 @@ const monthlyEarnings = computed(() => {
 const dailyEarnings = computed(() => {
   const earnings = getEarningsByPeriod('daily');
   return earnings.toFixed(2);
+});
+
+const uniformEarnings = computed(() => {
+  return reservationList.value
+    .flatMap(reservation => JSON.parse(JSON.parse(reservation.items)))
+    .filter(item => item.category === "uniform")
+    .reduce((acc, item) => acc + item.totalPrice, 0);
+});
+
+const bookEarnings = computed(() => {
+  return reservationList.value
+    .flatMap(reservation => JSON.parse(JSON.parse(reservation.items)))
+    .filter(item => item.category === "book")
+    .reduce((acc, item) => acc + item.totalPrice, 0);
 });
 
 function removeReservationItem(item) {
