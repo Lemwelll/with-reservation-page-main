@@ -29,7 +29,7 @@
             <v-row no-gutters class="pa-8">
               <v-col cols="12"> Earnings(Uniform) </v-col>
               <v-col cols="12" class="text-h6 font-weight-bold">
-                PHP {{ uniformEarnings.toFixed(2) }}
+                PHP {{ uniformEarnings }}
               </v-col>
             </v-row>
           </v-card>
@@ -40,7 +40,7 @@
             <v-row no-gutters class="pa-8">
               <v-col cols="12"> Earnings(Book) </v-col>
               <v-col cols="12" class="text-h6 font-weight-bold">
-                PHP {{ bookEarnings.toFixed(2) }}
+                PHP {{ bookEarnings }}
               </v-col>
             </v-row>
           </v-card>
@@ -294,17 +294,35 @@ const dailyEarnings = computed(() => {
 });
 
 const uniformEarnings = computed(() => {
-  return reservationList.value
-    .flatMap(reservation => JSON.parse(JSON.parse(reservation.items)))
+  const total = reservationList.value
+    .flatMap(reservation => {
+      try {
+        return JSON.parse(JSON.parse(reservation.items));
+      } catch (e) {
+        console.error("Error parsing reservation items:", e);
+        return [];
+      }
+    })
     .filter(item => item.category === "uniform")
-    .reduce((acc, item) => acc + item.totalPrice, 0);
+    .reduce((acc, item) => acc + (item.totalPrice || 0), 0);
+  
+  return total.toFixed(2);
 });
 
 const bookEarnings = computed(() => {
-  return reservationList.value
-    .flatMap(reservation => JSON.parse(JSON.parse(reservation.items)))
+  const total = reservationList.value
+    .flatMap(reservation => {
+      try {
+        return JSON.parse(JSON.parse(reservation.items));
+      } catch (e) {
+        console.error("Error parsing reservation items:", e);
+        return [];
+      }
+    })
     .filter(item => item.category === "book")
-    .reduce((acc, item) => acc + item.totalPrice, 0);
+    .reduce((acc, item) => acc + (item.totalPrice || 0), 0);
+  
+  return total.toFixed(2);
 });
 
 function removeReservationItem(item) {
