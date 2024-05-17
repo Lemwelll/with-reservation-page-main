@@ -89,7 +89,7 @@ function saveCart() {
 
   axios({
     method: 'post',
-    url: "http://localhost:8000/api/reservationdetails/",
+    url: "https://bookstore-backend-api.vercel.app/api/reservationdetails/",
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   }).then(data => {

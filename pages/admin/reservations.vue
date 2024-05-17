@@ -174,7 +174,7 @@ const isAdmin = ref(false);
 onMounted(() => {
   isAdmin.value = JSON.parse(localStorage.getItem('adminLogin')).adminID ? true : false;
 
-  axios.get("http://localhost:8000/api/reservationdetails/").then(data => {
+  axios.get("https://bookstore-backend-api.vercel.app/api/reservationdetails/").then(data => {
     reservationList.value = data.data;
   }).catch(err => {
     console.error(err);
@@ -187,7 +187,7 @@ function setReservationStatus(reservationItem, status, studentID, message, index
   formData.append('studentID', studentID);
   formData.append('message', message);
 
-  axios.put('http://localhost:8000/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
+  axios.put('https://bookstore-backend-api.vercel.app/api/reservationdetails/status/' + reservationItem.id, formData).then(result => {
     
     const reservation = reservationItem;
     reservation['status'] = status;
@@ -209,7 +209,7 @@ function deleteReservation(reservationItem, studentID, message, index) {
 
   axios({
     method: 'delete',
-    url: `http://localhost:8000/api/reservationdetailsadmin/${reservationItem.id}`,
+    url: `https://bookstore-backend-api.vercel.app/api/reservationdetailsadmin/${reservationItem.id}`,
     data: formData,
     headers: { 'Content-Type': 'multipart/form-data' }
   })
@@ -255,7 +255,7 @@ function handleChipClick(reservationItem, item, reservationId) {
     formData.append('items', JSON.stringify(items)); 
     formData.append('totalAmount', newTotal);
 
-    axios.put('http://localhost:8000/api/reservationdetails/items/' + listItem.id, formData).then(result => {
+    axios.put('https://bookstore-backend-api.vercel.app/api/reservationdetails/items/' + listItem.id, formData).then(result => {
       const reservation = listItem;
       reservation['items'] = JSON.stringify(items);
       reservation['totalAmount'] = newTotal; // Update items in reservation object

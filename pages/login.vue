@@ -112,7 +112,7 @@ const data: any = {
 // convert data into formData
 Object.keys(data).forEach(key => formData.append(key, data[key]));
 
-axios.post('http://localhost:8000/api/student/login', formData).then( (res: any) => {
+axios.post('https://bookstore-backend-api.vercel.app/api/student/login', formData).then( (res: any) => {
   if (res.data.studentID) {
     localStorage.setItem('studentLogin', JSON.stringify(res.data));
     alert(`Signup success. Welcome ${res.data.firstName}`)
