@@ -29,7 +29,7 @@
         <v-col v-else cols="12">
           <v-row>
             <template
-              v-for="inventoryItem in searchCompute"
+              v-for="inventoryItem in searchCompute" 
               :key="inventoryItem.name"
             >
               <v-col cols="12" xxl="3" xl="3" lg="3">

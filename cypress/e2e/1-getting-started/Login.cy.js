@@ -1,7 +1,7 @@
 describe('Login Page', () => {
   beforeEach(() => {
     // Visit the login page before each test
-    cy.visit('http://localhost:8000/login');
+    cy.visit('https://bookstore-backend-api.vercel.app/login');
   });
 
   it('allows user to sign in with valid credentials', () => {
@@ -13,7 +13,7 @@ describe('Login Page', () => {
     cy.get('form').submit();
 
     // Check if redirected to the home page
-    cy.url().should('include', 'http://localhost:8000/home');
+    cy.url().should('include', 'https://bookstore-backend-api.vercel.app/home');
   });
 
   it('displays error messages for invalid credentials', () => {
@@ -41,7 +41,7 @@ describe('Login Page', () => {
     cy.contains('Sign Up').click();
 
     // Check if redirected to the sign up page
-    cy.url().should('include', 'http://localhost:8000/sign-up');
+    cy.url().should('include', 'https://bookstore-backend-api.vercel.app/sign-up');
   });
 
   it('redirects to forgot password page when clicked on forgot password link', () => {
@@ -49,6 +49,6 @@ describe('Login Page', () => {
     cy.contains('Forgot your password').click();
 
     // Check if redirected to the forgot password page
-    cy.url().should('include', 'http://localhost:8000/forgot-password');
+    cy.url().should('include', 'https://bookstore-backend-api.vercel.app/forgot-password');
   });
 });

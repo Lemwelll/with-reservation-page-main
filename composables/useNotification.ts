@@ -6,7 +6,7 @@ export default function useNotification() {
     onMounted(() => {
       const getStudentLogin = JSON.parse(localStorage.getItem('studentLogin'));
   
-      axios.get(`http://localhost:8000/api/notification?studentID=${getStudentLogin.studentID}`)
+      axios.get(`https://bookstore-backend-api.vercel.app/api/notification?studentID=${getStudentLogin.studentID}`)
         .then(response => {
           notifications.value = response.data;
         })
